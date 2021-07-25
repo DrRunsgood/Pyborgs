@@ -24,6 +24,7 @@ def equip(player, args):
 
     for name, item in player.inventory:
         if item.name.lower() == str(toequip).lower():
+            #Weapon
             if type(item) is Weapon:
                 if  player.str >= item.req_str and player.dex >= item.req_dex:
                     currweap = player.eweap
@@ -39,8 +40,7 @@ def equip(player, args):
                     print("\nYou dexterity isn't enough to wield the " + item.name + "!\n")
                     break
 
-    #Armor
-    #for name, item in list(player.inventory):
+            #Armor
             if type(item) is Armor:
                 if item.name.lower() == str(toequip).lower() and player.str >= item.req_str and player.dex >= item.req_dex: #Need to choose which armor slot
                     toequip = item
