@@ -3,8 +3,10 @@ from items.container import *
 from items.weapon import *
 
 class Player(Character):
-    def __init__(self, name, level, maxhp, str, apt, dex, exp, eweap, ehead, echest, earms, elegs, efeet):
+    def __init__(self, name, level, maxhp, str, apt, dex, exp, gold, eweap, ehead, echest, earms, elegs, efeet):
         Character.__init__(self, name, level, maxhp, str, apt, dex, exp, eweap, ehead, echest, earms, elegs, efeet)
+
+        self.gold = gold
 
         #Exp needed to level up - this value is updated in levelUp method
         self.lvlNext = 25
@@ -49,7 +51,7 @@ class Player(Character):
 
 
     def levelUp(self, reward):
-        self.exp += reward
+        #self.exp += reward
 
         while self.exp >= self.lvlNext:
             self.level += 1
@@ -62,3 +64,6 @@ class Player(Character):
         print("Exp needed for next level: ", self.lvlNext)
         print("To level: {}%".format(int((self.exp/self.lvlNext)*100)))
         print("You have {} stat points to use".format(self.statpts))
+
+    def updateGold(self, reward):
+        pass

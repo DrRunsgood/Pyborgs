@@ -90,13 +90,45 @@ def atk(player, args):
         p1.dmg = randint(int(p1.effminDMG), int(p1.effmaxDMG))
         p2.dmg = randint(p2.effminDMG, p2.effmaxDMG)
 
-        print("{0} attacked {1} for {2} damage!".format(p1.name, p2.name, p1.dmg))
+        atk_str = "{0} attacked {1} for {2} damage!".format(p1.name, p2.name, p1.dmg)
+        print(atk_str.rjust(100))
         p2.hp = p2.hp - p1.dmg
-        print("{0} hp remaining: {1}".format(p2.name, p2.hp))
+        hp_str = "{0} hp remaining: {1}".format(p2.name, p2.hp)
+        print(hp_str.rjust(100))
 
         if p2.hp <= 0:
-            print("{0} has won the battle!".format(p1.name))
-            print("{0} has gained {1} experience points!".format(p1.name, p2.exp))
+                        #If player wins
+            if p1 == player:
+                #calc gold gain
+                lowgold = int(p2.gold*0.5)
+                highgold = int(p2.gold*1.5)
+                gold_gained = randint(lowgold, highgold)
+                p1.gold += gold_gained
+                #calc exp gain
+                lowexp = int(p2.exp*0.8)
+                highexp = int(p2.exp*1.4)
+                exp_gained = randint(lowexp, highexp)
+                p1.exp += exp_gained
+                print("{0} has won the battle!".format(p1.name))
+                print("{0} has gained {1} experience points!".format(p1.name, exp_gained))
+                print("{0} has earned {1} gold!".format(p1.name, gold_gained))
+                print("\n")
+            #If player loses
+            elif p2 == player:
+                #calc gold gain
+                lowgold = int(p1.gold*0.1)
+                highgold = int(p1.gold*0.5)
+                gold_gained = randint(lowgold, highgold)
+                p2.gold += gold_gained
+                #calc exp gain
+                lowexp = int(p1.exp*0.2)
+                highexp = int(p1.exp*0.4)
+                exp_gained = randint(lowexp, highexp)
+                p2.exp += exp_gained
+                print("{0} has won the battle!".format(p1.name))
+                print("{0} has gained {1} experience points!".format(p2.name, exp_gained))
+                print("{0} has earned {1} gold!".format(p2.name, gold_gained))
+                print("\n")
             break
 
         time.sleep(1.5)
@@ -107,6 +139,38 @@ def atk(player, args):
         if p1.hp <= 0:
             print("{0} has won the battle!".format(p2.name))
             print("{0} has gained {1} experience points!".format(p2.name, p1.exp))
+            print("{0} has earned {1} gold!".format(p2.name, p1.gold))
+            print("\n")
+            #If player loses
+            if p1 == player:
+                lowgold = int(p2.gold*0.1)
+                highgold = int(p2.gold*0.5)
+                gold_gained = randint(lowgold, highgold)
+                p1.gold += gold_gained
+                #calc exp gain
+                lowexp = int(p2.exp*0.2)
+                highexp = int(p2.exp*0.4)
+                exp_gained = randint(lowexp, highexp)
+                p1.exp += exp_gained
+                print("{0} has won the battle!".format(p2.name))
+                print("{0} has gained {1} experience points!".format(p1.name, exp_gained))
+                print("{0} has earned {1} gold!".format(p1.name, gold_gained))
+                print("\n")
+            #If player wins
+            elif p2 == player:
+                lowgold = int(p1.gold*0.5)
+                highgold = int(p1.gold*1.5)
+                gold_gained = randint(lowgold, highgold)
+                p2.gold += gold_gained
+                #calc exp gain
+                lowexp = int(p1.exp*0.8)
+                highexp = int(p1.exp*1.4)
+                exp_gained = randint(lowexp, highexp)
+                p2.exp += exp_gained
+                print("{0} has won the battle!".format(p2.name))
+                print("{0} has gained {1} experience points!".format(p2.name, exp_gained))
+                print("{0} has earned {1} gold!".format(p2.name, gold_gained))
+                print("\n")
             break
 
         time.sleep(1.5)
@@ -114,7 +178,7 @@ def atk(player, args):
     p1.hp = p1.maxhp
     p2.hp = p2.maxhp
 
-    player.levelUp(args.exp) #Check for level up
+    player.levelUp(exp_gained) #Check for level up
 
 ### UPDATE PLAYER STATS ###
 def updateStats(player, args):
@@ -145,9 +209,11 @@ def updateStats(player, args):
     if player.statpts == 0:
         print("You have no stat points to spend.")
 
+#View player info
 def me(player, args):
     print("Player Stats:")
     print("Level: ", player.level)
+    print("Gold: ", player.gold)
     print("HP: ", player.maxhp)
     print("Strength: ", player.str)
     print("Effective Dmg: ",player.effminDMG, player.effmaxDMG)
@@ -183,17 +249,22 @@ def updateShop():
 def shop(player, args):
 
     for item in shopitems:
-        print(item.name)
+        print(item.name + ", " + str(item.value))
 
-    purchase = input("Type the name of the item you'd like to buy: ")
+    purchase = input("Type the name of the item you'd like to buy (or 'exit' to leave shop): ")
+
     for item in shopitems:
+        if purchase == 'exit':
+            break
         if purchase == item.name:
-            player.inventory.add(item)
-            shopitems.remove(item)
-
-            print("Remaining shop items: ")
-            for item in shopitems:
-                print(item.name)
+            if player.gold >= item.value:
+                player.gold -= item.value
+                player.inventory.add(item)
+                shopitems.remove(item)
+                print(item.name + " has been purchased and added to your inventory!")
+            elif player.gold < item.value:
+                print("You don't have enough gold you broke bitch!")
+                break
 
 #Exit command
 def bye(player, args):

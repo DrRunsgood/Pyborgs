@@ -7,9 +7,9 @@ from items.weapon import *
 from items.armor import *
 import threading
 
-#name, hp, str, apt, dex, level
+#name, level, maxhp, str, apt, dex, exp, gold, eweap, ehead, echest, earms, elegs, efeet
 
-player = Player("Default", 1, 50, 10, 6, 5, 0, weapons[0], armor[0], armor[1], armor[2], armor[3], armor[4])
+player = Player("Default", 1, 50, 10, 6, 5, 0, 10, weapons[0], armor[0], armor[1], armor[2], armor[3], armor[4])
 
 #player.inventory.add(weapons[1])
 player.inventory.add(weapons[2])
