@@ -33,6 +33,18 @@ class Player(Character):
         self.inventory.remove(new)
         self.defense -= old.defense
         self.defense += new.defense
+        self.str -= old.add_str 
+        self.str += new.add_str
+        self.maxhp -= old.add_hp*10
+        self.maxhp += new.add_hp*10
+        self.dex -= old.add_dex 
+        self.dex += new.add_dex
+        self.apt -= old.add_apt 
+        self.apt += new.add_apt
+
+        #need to update dmg and HP
+    
+#Can we combime the above updaters into 1 fn? if type weapon/armor to split - or better to have these all split up for separate reusability
 
     #Update damage based on str stat changes
     def updateDamage(self):

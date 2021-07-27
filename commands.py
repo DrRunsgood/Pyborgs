@@ -22,7 +22,7 @@ def equip(player, args):
         
     toequip = input("\nWhat would you like to equip?")
 
-    for name, item in player.inventory:
+    for name, item in list(player.inventory):
         if item.name.lower() == str(toequip).lower():
             #Weapon
             if type(item) is Weapon:
@@ -31,15 +31,17 @@ def equip(player, args):
                     toequip = item
                     player.eweap = toequip
                     player.updateWeap(player.eweap, currweap)
+                    #updateStats
                     print("\nYou have equipped {0}".format(item.name))
                     print("Your effective dmg is: {0} - {1}".format(player.effminDMG,player.effmaxDMG))
+                    break
                 elif player.str < item.req_str:
                     print("\nYou are not strong enough to wield the " + item.name + "!\n")
                     break
                 elif player.dex < item.req_dex:
-                    print("\nYou dexterity isn't enough to wield the " + item.name + "!\n")
+                    print("\nYou dexterity isn't high enough to wield the " + item.name + "!\n")
                     break
-
+                
             #Armor
             if type(item) is Armor:
                 if item.name.lower() == str(toequip).lower() and player.str >= item.req_str and player.dex >= item.req_dex: #Need to choose which armor slot
@@ -48,32 +50,38 @@ def equip(player, args):
                         currhead = player.ehead
                         player.ehead = toequip
                         player.updateArmor(player.ehead, currhead)
+                        player.updateDamage()
                     elif toequip.slot == "chest":
                         currchest = player.echest
                         player.echest = toequip
                         player.updateArmor(player.echest, currchest)
+                        player.updateDamage()
                     elif toequip.slot == "arms":
                         currarms = player.earms
                         player.echest = toequip
                         player.updateArmor(player.earms, currarms)
+                        player.updateDamage()
                     elif toequip.slot == "legs":
                         currlegs = player.elegs
                         player.echest = toequip
                         player.updateArmor(player.elegs, currlegs)
+                        player.updateDamage()
                     elif toequip.slot == "feet":
                         currfeet = player.efeet
                         player.echest = toequip
                         player.updateArmor(player.efeet, currfeet)
+                        player.updateDamage()
                     print("\nYou have equipped {0}".format(item.name))
                     print("Your effective defense is: {0}".format(player.defense))
+                    print("\n")
                 elif player.str < item.req_str:
                     print("\nYou are not strong enough to wield the " + item.name + "!\n")
                     break
                 elif player.dex < item.req_dex:
                     print("\nYou dexterity isn't enough to wield the " + item.name + "!\n")
                     break
-        else:
-            print("not found!")
+        #else:
+       #     print("not found in inventory!")
 
 def weap(player, args):
     for name, item in player.inventory:
@@ -230,7 +238,10 @@ def me(player, args):
     print("Gold: ", player.gold)
     print("HP: ", player.maxhp)
     print("Strength: ", player.str)
+    print("Dexterity: ", player.dex)
+    print("Aptitude: ", player.apt)
     print("Effective Dmg: ",player.effminDMG, player.effmaxDMG)
+    print("\n")
 
 ### SHOP ###
 #Shop update counter
